@@ -1,0 +1,73 @@
+﻿<Window x:Class="lab7_3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:lab7_3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="498" Width="800">
+    <Window.Resources>
+        <local:MainViewModel x:Key="MainViewModel"/>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Violet" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock Foreground="Red" FontSize="26" FontWeight="Bold">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource MainViewModel}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" >
+
+            <ListBox>
+                <TextBlock Text="Price"></TextBlock>
+                <TextBox Width="150" Grid.Column="1" Grid.Row="1" Height="30"  Margin="0 0 15 0"
+                         Validation.ErrorTemplate="{StaticResource validationFailed}" >
+                    <TextBox.Text>
+                        <Binding Path="Select.Price">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="Shop Name"></TextBlock>
+                <TextBox Width="150" Text="{Binding Select.ShopName}"></TextBox>
+                <TextBlock Text="Product Name"></TextBlock>
+                <TextBox Width="150" Text="{Binding Select.productName}"></TextBox>
+                <Button Width="150" Height="50" Command="{Binding AddCommand}">Add</Button>
+                <TextBlock Margin="0,20,0,0" Width="150" Text="Index"></TextBlock>
+                <TextBox  Width="150" Text="{Binding MyStore.Index}"></TextBox>
+                <Button Width="150" Height="50" 
+                    Command="{Binding SearchByIndex}">Search</Button>
+                <TextBlock Margin="0,20,0,0" Width="150" Text="Product Name"></TextBlock>
+                <TextBox  Width="150" Text="{Binding ProductName}"></TextBox>
+                <Button Width="150" Height="50" 
+                        Command="{Binding SearchByIndex}">Search</Button>
+            </ListBox>
+
+        </Grid>
+        <Grid Grid.Column="1">
+
+            <ListBox VerticalAlignment="Top" Grid.Column="0" ItemsSource="{Binding MyStore.Articles}"
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+
+                            <TextBlock FontSize="18" Text="{Binding Path=Price}" />
+                            <TextBlock Text="{Binding Path=productName}" />
+                            <TextBlock Text="{Binding Path=ShopName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</Window>
